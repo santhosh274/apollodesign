@@ -1,0 +1,7 @@
+{
+  "build": {
+    "env": {
+      "RESEND_API_KEY": "@resend_api_key"
+    }
+  }
+}

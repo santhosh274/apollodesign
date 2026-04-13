@@ -7,11 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<!-- Formspree for email (CORS-friendly) -->
 
   <style>
     :root {
@@ -21,6 +21,7 @@
       --cursor-theme:var(--white-sub);--mono:'JetBrains Mono',monospace;
     }
     *{cursor:none!important;box-sizing:border-box}
+    html,body{overflow-x:hidden;max-width:100vw}
     body{background:var(--white-bg);color:var(--white-text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;margin:0;transition:background .8s cubic-bezier(.23,1,.32,1),color .8s cubic-bezier(.23,1,.32,1)}
     body.dark-zone{background:var(--black-bg);color:var(--black-text);--cursor-theme:var(--black-accent)}
 
@@ -94,6 +95,19 @@
     .nav-link:hover{opacity:.6}
     #main-nav.scrolled .nav-link:hover{opacity:1}
     .nav-link-contact{color:rgba(0,240,255,.8)}
+
+    /* Mobile Navigation */
+    .nav-mobile-toggle{display:none;width:32px;height:32px;flex-direction:column;justify-content:center;align-items:center;gap:6px;cursor:pointer;z-index:101}
+    .nav-mobile-toggle span{width:24px;height:2px;background:white;transition:all .3s;transform-origin:center}
+    .nav-mobile-toggle.active span:nth-child(1){transform:rotate(45deg) translate(5px,6px)}
+    .nav-mobile-toggle.active span:nth-child(2){opacity:0}
+    .nav-mobile-toggle.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-6px)}
+    body.dark-zone .nav-mobile-toggle span{background:white}
+    .nav-mobile-menu{position:fixed;top:0;right:-100%;width:100%;height:100vh;background:rgba(3,3,5,.98);z-index:100;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2rem;transition:right .4s cubic-bezier(.23,1,.32,1)}
+    .nav-mobile-menu.active{right:0}
+    .nav-mobile-menu .nav-link{font-size:1.5rem;color:white}
+    #main-nav.scrolled .nav-mobile-toggle span{background:#050505}
+    body.dark-zone #main-nav.scrolled .nav-mobile-toggle span{background:white}
 
     .sec-num{font-family:var(--mono);font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:rgba(148,163,184,.5);display:block;margin-bottom:1rem}
     .sec-label{font-family:var(--mono);letter-spacing:.5em;font-size:11px;margin-bottom:1.25rem;color:var(--white-sub);display:block;opacity:.7}
@@ -208,8 +222,8 @@
 
     @media(max-width:768px){
       .cursor-dot{display:none!important}
-      .horizontal-wrapper{flex-direction:column;width:100%!important;height:auto}
-      .project-slide{width:100%;height:auto;padding:10vh 5vw}
+      .horizontal-wrapper{flex-direction:column;width:100%!important;height:auto!important;transform:none!important}
+      .project-slide{width:100%;height:auto;min-height:auto;padding:8vh 5vw;flex-shrink:0}
       .stat-div{display:none}
       .hero-metrics{gap:1.5rem;flex-wrap:wrap;justify-content:center}
       .hm-sep{display:none}
@@ -217,10 +231,40 @@
       .proc-line{display:none}
       #main-nav.scrolled{width:calc(100% - 2rem);max-width:100%;padding:.75rem 1.5rem}
       .nav-links-desktop{display:none!important}
+      .nav-mobile-toggle{display:flex}
+      .stable-dark-card{padding:2rem!important}
+      .hero-title{font-size:clamp(2.5rem,10vw,4rem)}
+      .hero-sub{font-size:1rem;padding:0 1rem}
+      .pricing-card{padding:1.5rem}
+      .contact-card{padding:1.5rem}
+      .grid.md\:grid-cols-2,.grid.md\:grid-cols-3,.grid.md\:grid-cols-4{display:grid;grid-template-columns:1fr}
+      .arch-card{padding:1.5rem}
+      .sec-title{font-size:clamp(2rem,5vw,3rem)}
+      .contact-info-row{flex-wrap:wrap;gap:.5rem}
+      .contact-info-lbl{width:80px}
+      #kinetic-text{font-size:20vw}
+      .mq-item{font-size:2rem}
+      .testi-card{padding:1.5rem}
+      .input-field,.select-field{padding:.75rem 1rem;font-size:10px}
+      #project-overlay{padding:5vw}
+      #overlay-title{font-size:2.5rem}
+      #overlay-desc{font-size:1.25rem}
+      .blob{width:300px!important;height:300px!important}
+      .b1{top:-20%!important;left:-30%!important}
+      .b2{top:30%!important;right:-40%!important}
+      .b3{bottom:-10%!important;left:10%!important}
+      #work-trigger{position:relative!important;height:auto!important;overflow:visible!important}
+      /* Disable reveal animation on mobile */
+      .reveal{opacity:1!important;transform:none!important}
+      .stat-num{opacity:1!important}
+      /* Fix horizontal overflow */
+      body,html{overflow-x:hidden!important;max-width:100vw!important}
+      .wrap{overflow-x:hidden!important}
+      .noise{width:100%!important;left:0!important;top:0!important;height:100%!important}
     }
   </style>
 </head>
-<body class="antialiased">
+<body class="antialiased overflow-x-hidden">
 
 <div class="blob-container">
   <div class="blob b1" id="blob-1"></div><div class="blob b2" id="blob-2"></div>
@@ -241,7 +285,17 @@
     <a href="#architects" class="nav-link magnetic-target">Team</a>
     <a href="#enquiry-section" class="nav-link nav-link-contact magnetic-target">Contact →</a>
   </div>
+  <div class="nav-mobile-toggle md:hidden" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
 </nav>
+<div class="nav-mobile-menu" id="nav-mobile-menu">
+  <a href="#hero" class="nav-link" onclick="closeMobileMenu()">Root</a>
+  <a href="#work-trigger" class="nav-link" onclick="closeMobileMenu()">Work</a>
+  <a href="#pricing" class="nav-link" onclick="closeMobileMenu()">Pricing</a>
+  <a href="#architects" class="nav-link" onclick="closeMobileMenu()">Team</a>
+  <a href="#enquiry-section" class="nav-link nav-link-contact" onclick="closeMobileMenu()">Contact →</a>
+</div>
 
 <div class="wrap">
 
@@ -472,7 +526,7 @@
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
   gsap.registerPlugin(ScrollTrigger,TextPlugin);
-  (function(){emailjs.init("YOUR_PUBLIC_KEY")})();
+<!-- Brevo API key placeholder: replace 're_DhAyxMX8_9JpVPfxJtYwYths5QQVUceao' below with your actual key -->
 
   const blobs=document.querySelectorAll('.blob');
   const bc=[{xo:-.08,yo:-.06,s:.02,b:90},{xo:.1,yo:.04,s:.015,b:80},{xo:-.04,yo:.1,s:.025,b:100},{xo:.06,yo:-.08,s:.018,b:85},{xo:-.12,yo:.06,s:.022,b:95},{xo:.08,yo:-.04,s:.012,b:75}];
@@ -533,17 +587,46 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   gsap.to("#kinetic-text",{xPercent:-40,scrollTrigger:{trigger:"#story",start:"top bottom",end:"bottom top",scrub:1}});
 
-  if(innerWidth>=768){const w=document.querySelector("#work-trigger .horizontal-wrapper");if(w){gsap.to(w,{x:()=>-(w.scrollWidth-innerWidth),ease:"none",
-  scrollTrigger:{trigger:"#work-trigger",pin:true,scrub:1,end:()=>"+="+(w.scrollWidth-innerWidth),invalidateOnRefresh:true,anticipatePin:1}})}}
+  // Horizontal scroll only on desktop
+  const initHorizontalScroll = () => {
+    if (innerWidth >= 768) {
+      const w = document.querySelector("#work-trigger .horizontal-wrapper");
+      if (w) {
+        gsap.to(w, {
+          x: () => -(w.scrollWidth - innerWidth),
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#work-trigger",
+            pin: true,
+            scrub: 1,
+            end: () => "+=" + (w.scrollWidth - innerWidth),
+            invalidateOnRefresh: true,
+            anticipatePin: 1
+          }
+        });
+      }
+    }
+  };
+  initHorizontalScroll();
+
+  // Reinitialize on resize
+  window.addEventListener('resize', () => {
+    ScrollTrigger.refresh();
+  });
 
   document.querySelectorAll('[data-anim-border]').forEach(b=>{
   ScrollTrigger.create({trigger:b,start:"top 90%",once:true,onEnter:()=>b.classList.add('visible')})});
 
-  gsap.utils.toArray('.reveal').forEach(el=>{gsap.fromTo(el,{opacity:0,y:24},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:el,start:"top 88%"}})});
+  if (innerWidth >= 768) {
+    gsap.utils.toArray('.reveal').forEach(el=>{gsap.fromTo(el,{opacity:0,y:24},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:el,start:"top 88%"}})});
 
-  gsap.utils.toArray('.stat-num').forEach(el=>{const t=parseInt(el.dataset.target),sf=el.innerHTML.replace(/[0-9]/g,'').trim();
-  ScrollTrigger.create({trigger:el,start:"top 85%",once:true,onEnter:()=>{const c={v:0};
-  gsap.to(c,{v:t,duration:1.5,ease:"power2.out",onUpdate:()=>{el.innerHTML=Math.round(c.v)+sf}})}})});
+    gsap.utils.toArray('.stat-num').forEach(el=>{const t=parseInt(el.dataset.target),sf=el.innerHTML.replace(/[0-9]/g,'').trim();
+    ScrollTrigger.create({trigger:el,start:"top 85%",once:true,onEnter:()=>{const c={v:0};
+    gsap.to(c,{v:t,duration:1.5,ease:"power2.out",onUpdate:()=>{el.innerHTML=Math.round(c.v)+sf}})}})});
+  } else {
+    // Mobile: show stats immediately
+    gsap.utils.toArray('.stat-num').forEach(el=>{const t=parseInt(el.dataset.target),sf=el.innerHTML.replace(/[0-9]/g,'').trim();el.innerHTML=t+sf});
+  }
 
   window.openOverlay=(tag,title,desc,footer)=>{document.getElementById('overlay-tag').innerText=`// ${tag}`;
   document.getElementById('overlay-title').innerText=title;document.getElementById('overlay-desc').innerText=desc;
@@ -552,13 +635,67 @@ document.addEventListener('DOMContentLoaded',()=>{
   window.closeOverlay=()=>{gsap.to('#project-overlay',{opacity:0,duration:.3,onComplete:()=>{document.getElementById('project-overlay').style.display='none';document.body.style.overflow=''}})};
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOverlay()});
 
-  document.getElementById('contact-form').addEventListener('submit',function(e){
-  e.preventDefault();const b=document.getElementById('submit-btn');b.innerText="TRANSMITTING...";
-  emailjs.sendForm('YOUR_SERVICE_ID','YOUR_TEMPLATE_ID',this)
-  .then(()=>{b.innerText="RECEIVED ✦";b.style.background="#22c55e";this.reset();
-  setTimeout(()=>{b.innerText="Submit Manifest →";b.style.background=""},3000)},
-  ()=>{b.innerText="ERROR [X]";b.style.background="#ef4444";
-  setTimeout(()=>{b.innerText="Submit Manifest →";b.style.background=""},3000)})});
+  window.toggleMobileMenu = function() {
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const menu = document.getElementById('nav-mobile-menu');
+    toggle.classList.toggle('active');
+    menu.classList.toggle('active');
+    document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+  };
+  
+  window.closeMobileMenu = function() {
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const menu = document.getElementById('nav-mobile-menu');
+    toggle.classList.remove('active');
+    menu.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const b = document.getElementById('submit-btn');
+  const formData = new FormData(this);
+  const data = {
+    user_name: formData.get('user_name'),
+    user_email: formData.get('user_email'),
+    project_type: formData.get('project_type'),
+    message: formData.get('message')
+  };
+  b.innerText = "TRANSMITTING...";
+  b.disabled = true;
+
+  try {
+    const response = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_name: data.user_name,
+        user_email: data.user_email,
+        project_type: data.project_type,
+        message: data.message
+      })
+    });
+
+    if (response.ok) {
+      b.innerText = "RECEIVED ✦";
+      b.style.background = "#22c55e";
+      this.reset();
+    } else {
+      throw new Error('Server error');
+    }
+  } catch (error) {
+    b.innerText = "ERROR [X]";
+    b.style.background = "#ef4444";
+  } finally {
+    setTimeout(() => {
+      b.innerText = "Submit Manifest →";
+      b.style.background = "";
+      b.disabled = false;
+    }, 3000);
+  }
+});
 
   ScrollTrigger.refresh();
 });
